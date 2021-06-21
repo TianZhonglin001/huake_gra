@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.noticeMapper" >
+  <resultMap id="BaseResultMap" type="bean.notice" >
+    <id column="nid" property="nid" jdbcType="INTEGER" />
+    <result column="nname" property="nname" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="ntime" property="ntime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    nid, nname, content, ntime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="bean.noticeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from notice
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from notice
+    where nid = #{nid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from notice
+    where nid = #{nid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="bean.noticeExample" >
+    delete from notice
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="bean.notice" >
+    insert into notice (nid, nname, content, 
+      ntime)
+    values (#{nid,jdbcType=INTEGER}, #{nname,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{ntime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="bean.notice" >
+    insert into notice
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="nid != null" >
+        nid,
+      </if>
+      <if test="nname != null" >
+        nname,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="ntime != null" >
+        ntime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="nid != null" >
+        #{nid,jdbcType=INTEGER},
+      </if>
+      <if test="nname != null" >
+        #{nname,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="ntime != null" >
+        #{ntime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="bean.noticeExample" resultType="java.lang.Integer" >
+    select count(*) from notice
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update notice
+    <set >
+      <if test="record.nid != null" >
+        nid = #{record.nid,jdbcType=INTEGER},
+      </if>
+      <if test="record.nname != null" >
+        nname = #{record.nname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ntime != null" >
+        ntime = #{record.ntime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update notice
+    set nid = #{record.nid,jdbcType=INTEGER},
+      nname = #{record.nname,jdbcType=VARCHAR},
+      content = #{record.content,jdbcType=VARCHAR},
+      ntime = #{record.ntime,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="bean.notice" >
+    update notice
+    <set >
+      <if test="nname != null" >
+        nname = #{nname,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="ntime != null" >
+        ntime = #{ntime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where nid = #{nid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="bean.notice" >
+    update notice
+    set nname = #{nname,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      ntime = #{ntime,jdbcType=VARCHAR}
+    where nid = #{nid,jdbcType=INTEGER}
+  </update>
+</mapper>
